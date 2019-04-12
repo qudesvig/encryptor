@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 12:46:30 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/11 16:34:26 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/12 15:15:50 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,11 @@ t_netw		*prepare_init_netw(t_netw *n, double *data)
 void		init_encr(void)
 {
 	t_netw	n;
-	double	*data;
-	double	*out;
+	double	**data;
 	int		i;
 
 	i = 0;
-	data = NULL;
-	out = NULL;
-	prepare_init_netw(&n, data);
-	if (!(out = (double*)malloc(sizeof(double) * NB_OUTPUT)))
-		return ;
-	out = firing(&n, &out);
-	/*while (i < NB_OUTPUT)
-	{
-		printf("output n %d = %.50f\n", i, out[i]);
-		i++;
-	}*/
-	back_prop(&n, out);
+	data = creat_database(1, -1);
+	prepare_init_netw(&n, data[0]);
+	printf("last fitness = %f\n", training(&n, data));
 }

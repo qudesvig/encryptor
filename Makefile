@@ -5,6 +5,8 @@ SRCS_PATH= srcs/
 SRCS_NAME= main.c \
 		   encryptor.c \
 		   filling_netw.c \
+		   database.c \
+		   training.c \
 		   backp.c
 
 SRCS= $(addprefix $(SRCS_PATH), $(SRCS_NAME))

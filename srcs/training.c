@@ -1,42 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   backp.c                                            :+:      :+:    :+:   */
+/*   training.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/11 16:30:59 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/12 16:41:57 by qudesvig         ###   ########.fr       */
+/*   Created: 2019/04/12 14:40:56 by qudesvig          #+#    #+#             */
+/*   Updated: 2019/04/12 16:42:01 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/encryptor.h"
 
-double	ft_cost_fct(double *out, double *in)
+double		training(t_netw *n, double **data)
 {
-	double	cost;
+	double	fitness;
 	int		i;
+	int		j;
+	double	*out;
 
-	cost = 0;
 	i = 0;
-	while (i < NB_INPUT)
+	j = 0;
+	fitness = 0;
+	while (i * 100 < DATASIZE)
 	{
-		cost += (out[i] - in[i]) * (out[i] - in[i]);
+		j = 0;
+		while (j < 100)
+		{
+			fill_data_in(n, data[i * 100 + j]);
+			out = firing(n);
+			back_prop(n, data[i * 100 + j], out);
+			j++;
+		}
 		i++;
 	}
-	return (cost);
-}
-
-void	back_prop(t_netw *n, double *data, double *out)
-{
-	double	cost;
-	int		i;
-	
-	i = 0;
-	while (i < NB_INPUT)
-	{
-		cost = (out[i] - data[i]) * (out[i] - data[i]);
-		
-		i++;
-	}
+	return (fitness);
 }
