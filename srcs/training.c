@@ -14,23 +14,29 @@
 
 double		training(t_netw *n, double **data)
 {
-	double	fitness;
+	int		epoch;
 	int		i;
 	int		j;
 	double	*out;
+	double	*weight_grad;
 
 	i = 0;
 	j = 0;
-	fitness = 0;
 	while (i * 100 < DATASIZE)
 	{
-		j = 0;
-		while (j < 100)
+		epoch = 0;
+		while (epoch < 100)
 		{
-			fill_data_in(n, data[i * 100 + j]);
-			out = firing(n);
-			back_prop(n, data[i * 100 + j], out);
-			j++;
+			j = 0;
+			while (j < 100)
+			{
+				fill_data_in(n, data[i * 100 + j]);
+				out = firing(n);
+				calc_gradient(data[i * 100 + j], out, weight_grad);
+				j++;
+			}
+			apply_grad(n, weight_grad, 0.1);
+			epoch++;
 		}
 		i++;
 	}
