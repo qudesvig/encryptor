@@ -26,10 +26,11 @@ FLAGS= -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME): $(LIBIA) $(LIB) $(OBJS) $(INC)
-	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(LIBIA) $(LIB)
+	@$(CC) $(FLAGS) -O1 -O2 -O3 -Ofast -march=native  -o $(NAME) $(OBJS) $(LIBIA) $(LIB)
+
 
 %.o: $(SRCS_PATH)/%.c $(INC)
-	@$(CC) $(FLAGS) -c $< -o $@
+	@$(CC) $(FLAGS) -O1 -O2 -O3 -Ofast -march=native -c $< -o $@
 
 $(LIBIA): $(LIB) FORCE
 	@make -C libia/

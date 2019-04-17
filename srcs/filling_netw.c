@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:10:45 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/11 16:37:34 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/17 14:58:04 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ double		*fill_data(double *data)
 	i = 0;
 	while (i < NB_INPUT)
 	{
-		data[i] = (rand() / (double)RAND_MAX) * (1 - -1) + -1;
+		data[i] = rand_dbl(-5, 5);
 		i++;
 	}
 	return (data);
@@ -27,7 +27,7 @@ double		*fill_data(double *data)
 
 int			*init_layer_size(int *layer_size)
 {
-	int		i;
+/*	int		i;
 	int		size;
 
 	i = 1;
@@ -43,7 +43,9 @@ int			*init_layer_size(int *layer_size)
 			size *= 2;
 		printf("layer_saze %d = %d\n", i, layer_size[i]);
 		i++;
-	}
+	}*/
+	layer_size[0] = 2;
+	layer_size[1] = 2;
 	return (layer_size);
 }
 

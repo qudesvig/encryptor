@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 15:31:45 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/11 15:59:51 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/17 14:32:17 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int		init_network(t_netw *n, double *data_in, int *layer_size, double *bias)
 		printf("at layer %d\n", i);
 		while (j < layer_size[i])
 		{
-			init_neurone(&(n->netw[i][j]),  layer_size[i + 1], tanh);
+			init_neurone(&(n->netw[i][j]),  layer_size[i + 1], id_dbl);
 			if (i == 0)
 			{
 				n->netw[i][j].in = n->input[j];

@@ -75,7 +75,7 @@ $(NAME): $(OBJS) libft.h
 	@ranlib $(NAME)
 
 $(OBJS): $(SRCS)
-	@gcc $(FLAG) -c $(SRCS)
+	@gcc $(FLAG) -Ofast -march=native -c $(SRCS)
 
 clean:
 	@rm -rf $(OBJS)

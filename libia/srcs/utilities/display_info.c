@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:05:10 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/11 15:03:29 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/17 17:28:00 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	display_weight(t_netw n)
 			printf("weight going to layer %d neurone %d :\n", i, k);
 			while (j < n.layer_size[i])
 			{
-				printf("from neurone %d : %.2f\n", j, n.netw[i][j].weight[k]);
+				printf("from neurone %d : %.25Lf\n", j, n.netw[i][j].weight[k]);
 				j++;
 			}
 			k++;

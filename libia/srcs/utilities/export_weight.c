@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/01 16:57:04 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/01 17:38:54 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/17 17:28:16 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int			export_weight(t_netw n)
 		{
 			k = -1;
 			while (++k < n.layer_size[i])
-				dprintf(fd, "%f\t", n.netw[i][j].weight[k]);
+				dprintf(fd, "%Lf\t", n.netw[i][j].weight[k]);
 			dprintf(fd, "\n");
 		}
 		dprintf(fd, "\n");

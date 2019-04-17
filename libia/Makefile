@@ -54,13 +54,14 @@ $(NAME): $(OBJS_UTILITES) $(OBJS_GENETIC) $(INC)
 	@echo "Making $(RED)$(SOU)Libia$(DEF)$(RED)...$(DEF)"
 	@ar rc $(NAME) $(OBJS)
 	@ranlib $(NAME)
+	
 	@echo "$(GRE)Done !$(DEF)"
 
 $(SRCS_UTILITIES_PATH)%.o: $(SRCS_UTILITIES_PATH)%.c $(INC)
-	@gcc $(FLAG) -c $< -o $@ -I $(INC_PATH)
+	@gcc $(FLAG) -Ofast -march=native -c $< -o $@ -I $(INC_PATH)
 
 $(SRCS_GENETIC)%.o: $(SRCS_GENETIC_PATH)%.c $(INC)
-	@gcc $(FLAG) -c $< -o $@ -I $(INC_PATH)
+	@gcc $(FLAG) -Ofast -march=native -c $< -o $@ -I $(INC_PATH)
 
 clean:
 	@rm -rf $(OBJS)

@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 12:46:30 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/12 15:15:50 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/17 22:04:22 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,15 @@
 
 double		*encryptor(t_netw *n)
 {
+	double	*out;
+
+	if (!(out = (double*)malloc(sizeof(double) * NB_OUTPUT)))
+	{
+		ft_putendl("mallox error");
+		return (NULL);
+	}
 	(void)n;
-	return (NULL);
+	return (out);
 }
 
 t_netw		*prepare_init_netw(t_netw *n, double *data)
@@ -30,7 +37,6 @@ t_netw		*prepare_init_netw(t_netw *n, double *data)
 	data = fill_data(data);
 	layer_size = init_layer_size(layer_size);
 	bias = init_bias(bias);
-	PUT
 	if (init_network(n, data, layer_size, bias))
 		return (NULL);
 	PUT
@@ -44,7 +50,8 @@ void		init_encr(void)
 	int		i;
 
 	i = 0;
-	data = creat_database(1, -1);
+	data = creat_database(5, -5);
 	prepare_init_netw(&n, data[0]);
-	printf("last fitness = %f\n", training(&n, data));
+	training(&n, data);
+	encryptor(&n);
 }

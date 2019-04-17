@@ -6,76 +6,77 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 16:30:59 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/12 16:41:57 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/17 22:04:16 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/encryptor.h"
 
-double	ft_cost_fct(double *out, double *in)
+long double **computing_data(t_netw *n, double **data, long double **out)
 {
-	double	cost;
 	int		i;
 
-	cost = 0;
 	i = 0;
-	while (i < NB_INPUT)
+	while (i < DATASIZE)
 	{
-		cost += (out[i] - in[i]) * (out[i] - in[i]);
+		n->netw[0][0].in = data[i][0];
+		n->netw[0][1].in = data[i][1];
+		out[i] = firing(n);
+		n->netw[0][0].out = out[i][0];
+		n->netw[0][1].out = out[i][1];
+		i++;
+	}
+	return (out);
+}
+
+long double	*ft_cost(long double **out, double **data, long double *cost)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < DATASIZE)
+	{
+		j = 0;
+		while (j < NB_OUTPUT)
+		{
+			cost[i] += out[i][j] - data[i][j];
+			j++;
+		}
+		cost[i] *= cost[i];
 		i++;
 	}
 	return (cost);
 }
 
-t_neurone find_neur(int nw, int nout, t_netw *n)
+long double	chain_rule(long double dcost, long double dact, long double dfct)
 {
-	int	i;
-	int	j;
-	int	tmp;
+	return (dcost * dfct * dact);
+}
+
+long double	*calc_gradient(t_netw *n, long double **out, long double **data, long double *weight_grad)
+{
+	int			i;
+	int			j;
+	int			k;
+	long double dact;
 
 	i = 0;
-	j = 0;
-	tmp = 0;
-	tmp += n->layer_size[i] * n->layer_size[i + 1]
-	while (tmp < nw)
-	{
-		tmp += n->layer_size[i] * n->layer_size[i + 1];
-		i++;
-	}
-	j = nw - (tmp = n->layer_size[i] * n->layer_size[i + 1]);
-	return (n->netw[i][j]);
-
-}
-
-double	chain_rule(t_neurone n, double target)
-{
-	return ((n.out - target) * (1 - n.out * n.out) * in);
-}
-
-void	calc_grad(double *in, double *out, double *grad, t_netw *n)
-{
-	int	i;
-	int	j;
-	double	cost;
-
-	i = NB_WEIGHT - 1;
-	while (i >= 0)
+			dact = 0;
+			k = 0;
+	while (i < n->layer_size[0])
 	{
 		j = 0;
-		while (j < NB_INPUT)
+		while (j < n->layer_size[1])
 		{
-			cost = (out[j] - in[j]) * (out[j] - in[j]);
-			//working for lqst lqyer only
-			grad[j] += chain_rule(find_neur(i, j, n), in[i]);
-			//so 
-			return ;
 			j++;
 		}
 		i++;
 	}
+	return (weight_grad);
 }
 
-void	apply_grad(t_netw *n, double *grad, double lr)
+void	apply_grad(t_netw *n, long double *grad, double lr)
 {
 	int		i;
 	int		j;
@@ -83,12 +84,12 @@ void	apply_grad(t_netw *n, double *grad, double lr)
 
 	i = 0;
 	k = 0;
-	while (i < NB_LAYER - 1)
+	while (i < n->layer_size[0])
 	{
 		j = 0;
-		while (j < n->layer_size[i + 1])
+		while (j < n->layer_size[1])
 		{
-			n[i][j] -= lr * grad[k];
+			n->netw[0][i].weight[j] -= lr * (grad[k] / DATASIZE);
 			j++;
 			k++;
 		}
