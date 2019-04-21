@@ -1,39 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_weight.c                                    :+:      :+:    :+:   */
+/*   import_weight.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/01 16:57:04 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/21 20:27:08 by qudesvig         ###   ########.fr       */
+/*   Created: 2019/04/21 20:31:27 by qudesvig          #+#    #+#             */
+/*   Updated: 2019/04/21 20:45:28 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libia.h"
+#include "../../includes/libia.h"
 
-int			export_weight(t_netw *n)
+int		inport_weight(char *file, t_netw *n)
 {
+	int		fd;
 	int		i;
 	int		j;
 	int		k;
-	int		fd;
+	char	*line;
+	char	**weight;
 
-	if (!(fd = open("fichier", O_CREAT | O_WRONLY, 0777)))
+	if (!(fd = open(file, O_RDONLY)))
 		return (-1);
-	i = -1;
-	while (++i < NB_LAYER - 2)
+	i = 0;
+	j = 0;
+	while (read(fd, &line, 54) > 0)
 	{
-		j = -1;
-		while (++j < n->layer_size[i])
+		weight = ft_strsplit(line, '\t');
+		j = 0;
+		while (weight[j])
 		{
-			k = -1;
-			while (++k < n->layer_size[i + 1])
-				dprintf(fd, "%.50Lf\t", n->netw[i][j].weight[k]);
-			dprintf(fd, "\n");
+			k = 0;
+			while (k < n->layer_size[i + 1])
+			{
+				n->netw[i][j].weight[k] = atof(weight[i]);
+				k++;
+			}
+			j++;
 		}
-		dprintf(fd, "\n");
+		free(line);
+		i++;
 	}
-	close(fd);
 	return (0);
 }

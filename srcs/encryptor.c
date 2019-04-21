@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 12:46:30 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/17 22:04:22 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/21 21:28:33 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,37 @@
 
 double		*encryptor(t_netw *n)
 {
-	double	*out;
+	double **data;
+	int		i;
+	int		j;
+	long double cost;
+	long double tmpcost;
+	
 
-	if (!(out = (double*)malloc(sizeof(double) * NB_OUTPUT)))
+	data = creat_database(5, -5);
+	i = 0;
+	cost = 0;
+	while (i < DATASIZE)
 	{
-		ft_putendl("mallox error");
-		return (NULL);
+		j = 0;
+		tmpcost = 0;
+		fill_nw(data[i], n);
+		firing(n);
+		while (j < NB_OUTPUT)
+		{
+			tmpcost += n->netw[2][j].out - data[i][j];
+			j++;
+		}
+		cost += tmpcost * tmpcost;
+		free(data[i]);
+		i++;
 	}
-	(void)n;
-	return (out);
+	free(data);
+	cost /= DATASIZE;
+	printf("in real condition average of cost = %.25Lf\n", cost);
+	if (cost < 0.0000005)
+		export_weight(n);
+	return (0);
 }
 
 t_netw		*prepare_init_netw(t_netw *n, double *data)
@@ -39,7 +61,6 @@ t_netw		*prepare_init_netw(t_netw *n, double *data)
 	bias = init_bias(bias);
 	if (init_network(n, data, layer_size, bias))
 		return (NULL);
-	PUT
 	return (n);
 }
 
@@ -50,8 +71,11 @@ void		init_encr(void)
 	int		i;
 
 	i = 0;
+	ft_putendl("init data");
 	data = creat_database(5, -5);
+	ft_putendl("init netw");
 	prepare_init_netw(&n, data[0]);
 	training(&n, data);
 	encryptor(&n);
+	free_nw(&n);
 }

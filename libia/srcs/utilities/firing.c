@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:01:45 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/17 22:04:18 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/21 18:40:44 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,31 +39,29 @@ void		apply_weight(t_netw *n, double *weight)
 	}
 }
 
-long double		*last_out(t_neurone *n, int nb_out, long double **outs)
+void		last_out(t_neurone *n, int nb_out)
 {
 	int		i;
+	int		j;
 
 	//printf("Computing last layer output\n");
 	i = 0;
+	j = NB_NEURONE - NB_OUTPUT;
 	while (i < nb_out)
 	{
 		n[i].out = n[i].act(n[i].in);
-		(*outs)[i] = n[i].out;
+		j++;
 		i++;
 	}
-	return (*outs);
 }
 
-long double		*firing(t_netw *n)
+void		firing(t_netw *n)
 {
 	int			k;
 	int			i;
 	int			j;
-	long double	*out;
 
 	i = 0;
-	if (!(out = (long double*)malloc(sizeof(long double) * NB_OUTPUT)))
-		return (NULL);
 	//for each layer
 	while (i < NB_LAYER - 1)
 	{
@@ -85,5 +83,5 @@ long double		*firing(t_netw *n)
 		}
 		i++;
 	}
-	return (last_out(n->netw[i], n->layer_size[i], &out));
+	last_out(n->netw[i], n->layer_size[i]);
 }

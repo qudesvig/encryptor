@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 15:31:20 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/17 17:25:11 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/21 19:26:02 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static double		rand_dbl(double min, double max)
 		index = 0;
 	if (index == 0)
 	{
-
 		fd = open("/dev/random", O_RDONLY);
 		if (read(fd, buff, BUFF_RAND) == -1)
 			return (0);
@@ -52,7 +51,7 @@ int					init_neurone(t_neurone *n, int nb_weight, double (*f)(double))
 		return (-1);
 	while (i < nb_weight)
 	{
-		n->weight[i] = rand_dbl(-1, 1);
+		n->weight[i] = rand_dbl(-5, 5);
 		i++;
 	}
 	return (0);

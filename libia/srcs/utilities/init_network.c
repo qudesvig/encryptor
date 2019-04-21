@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 15:31:45 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/17 14:32:17 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/21 19:36:36 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,9 @@ int		init_network(t_netw *n, double *data_in, int *layer_size, double *bias)
 		j = 0;
 		if (!(n->netw[i] = (t_neurone*)malloc(sizeof(t_neurone) * layer_size[i])))
 			return (-1);
-		printf("at layer %d\n", i);
 		while (j < layer_size[i])
 		{
-			init_neurone(&(n->netw[i][j]),  layer_size[i + 1], id_dbl);
+			init_neurone(&(n->netw[i][j]), layer_size[i + ((i == NB_LAYER - 1) ? 0 : 1)], id_dbl);
 			if (i == 0)
 			{
 				n->netw[i][j].in = n->input[j];
@@ -84,5 +83,28 @@ int		init_network(t_netw *n, double *data_in, int *layer_size, double *bias)
 		}
 		i++;
 	}
+	return (0);
+}
+
+int		free_nw(t_netw *n)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < NB_LAYER - 1)
+	{
+		j = 0;
+		while (j < n->layer_size[i])
+		{
+			free(n->netw[i][j].weight);
+			j++;
+		}
+		i++;
+		free(n->netw[i]);
+	}
+	free(n->netw);
+	free(n->layer_size);
+	free(n->bias);
 	return (0);
 }

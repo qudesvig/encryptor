@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 14:04:23 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/17 21:16:41 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/21 20:42:37 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct		s_netw
 int					init_neurone(t_neurone *n, int nb_weight, double (*f)(double));
 int					init_network(t_netw *n, double *data_in, int *layer_size, double *bias);
 int					fill_data_in(t_netw *n, double *data_in);
+int					free_nw(t_netw *n);
 
 //activation function
 double				id_dbl(double input);
@@ -68,7 +69,7 @@ double	 			sigmoid(double x);
 double				sig_dbl(double input);
 double				heaviside_dbl(double input);
 
-long double			*firing(t_netw *n);
+void				firing(t_netw *n);
 double				neurone_output(t_neurone n, int out);
 void				apply_weight(t_netw *n, double *weight);
 
@@ -77,5 +78,6 @@ void				display_weight(t_netw n);
 void				display_inputs(t_netw n);
 void				display_outputs(t_netw n, int layer);
 
-int					export_weight(t_netw n);
+int					export_weight(t_netw *n);
+int					inport_weight(char *file, t_netw *n);
 #endif

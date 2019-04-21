@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 14:23:11 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/16 06:04:30 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/21 14:35:58 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
 //# define NB_INPUT	10000
 //# define NB_OUTPUT	10000
 //# define NB_WEIGHT	251920384
-//# define BIAS 1
+//# define BIAS 0
 
-# define NB_LAYER	2
-# define NB_NEURONE 4
+# define NB_LAYER	3
+# define NB_NEURONE 5
 # define NB_INPUT	2
 # define NB_OUTPUT	2
 # define NB_WEIGHT	4
-# define BIAS 1
+# define BIAS 0
 #endif
