@@ -6,17 +6,17 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 16:07:14 by qudesvig          #+#    #+#             */
-/*   Updated: 2018/11/17 18:51:55 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/02/17 05:55:14 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_atoi(const char *str)
+long long		ft_atoi(const char *str)
 {
-	int		i;
-	int		sign;
-	long	nb;
+	int			i;
+	int			sign;
+	long long	nb;
 
 	i = 0;
 	sign = 1;
@@ -34,5 +34,5 @@ int		ft_atoi(const char *str)
 		nb = nb * 10 + (str[i] - 48);
 		i++;
 	}
-	return ((int)nb * sign);
+	return (nb * sign);
 }

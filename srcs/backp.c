@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 16:30:59 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/21 17:45:38 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/23 17:23:05 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ long double 	*back_p(double **data, t_netw *n, long double *grad, long double *c
 	while (i < DATASIZE)
 	{
 		//printf("computing data %d\n", i);
-		fill_nw(data[i], n);
+		fill_nw(data[i], n, 0);
 		//ft_putendl("\tfiring");
 		firing(n);
 		//ft_putendl("\tfiring : Done!");

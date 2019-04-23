@@ -6,18 +6,18 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:10:45 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/21 18:07:48 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/23 15:55:50 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/encryptor.h"
 
-double		*fill_data(double *data)
+double		*fill_data(double *data, int mod)
 {
 	int		i;
 
 	i = 0;
-	while (i < NB_INPUT)
+	while (i < ((mod == 0) ? NB_INPUT : NB_INPUT2))
 	{
 		data[i] = rand_dbl(-5, 5);
 		i++;
@@ -25,7 +25,7 @@ double		*fill_data(double *data)
 	return (data);
 }
 
-int			*init_layer_size(int *layer_size)
+int			*init_layer_size(int *layer_size, int mod)
 {
 	/*int		i;
 	int		size;
@@ -44,18 +44,31 @@ int			*init_layer_size(int *layer_size)
 		printf("layer_saze %d = %d\n", i, layer_size[i]);
 		i++;
 	}*/
-	layer_size[0] = 2;
-	layer_size[1] = 1;
-	layer_size[2] = 2;
+	if (mod == 0)
+	{
+		layer_size[0] = 2;
+		layer_size[1] = 1;
+		layer_size[2] = 2;
+	}
+	else
+	{
+		layer_size[0] = 16;
+		layer_size[1] = 8;
+		layer_size[2] = 4;
+		layer_size[3] = 2;
+		layer_size[4] = 4;
+		layer_size[5] = 8;
+		layer_size[6] = 16;
+	}
 	return (layer_size);
 }
 
-double		*init_bias(double *bias)
+double		*init_bias(double *bias, int mod)
 {
 	int		i;
 
 	i = 0;
-	while (i < NB_LAYER - 1)
+	while (i < ((mod == 0) ? NB_LAYER - 1 : NB_LAYER2 - 1))
 	{
 		bias[i] = BIAS;
 		i++;
@@ -88,12 +101,12 @@ void		reset_nw(t_netw *n)
 	}
 }
 
-void		fill_nw(double *data, t_netw *n)
+void		fill_nw(double *data, t_netw *n, int mod)
 {
 	int		i;
 
 	i = 0;
-	while (i < NB_INPUT)
+	while (i < ((mod == 0) ? NB_INPUT : NB_INPUT2))
 	{
 		n->input[i] = data[i];
 		n->netw[0][i].in = data[i];

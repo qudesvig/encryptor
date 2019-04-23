@@ -4,6 +4,8 @@ SRCS_PATH= srcs/
 
 SRCS_NAME= main.c \
 		   encryptor.c \
+		   multi_encryptor.c \
+		   init_multi_encryptor.c \
 		   filling_netw.c \
 		   database.c \
 		   training.c \
@@ -21,16 +23,16 @@ LIBIA= libia/libia.a
 
 CC= gcc
 
-FLAGS= -Wall -Wextra -Werror
+FLAGS= -Wall -Wextra -Werror -O1 -O2 -O3 -Ofast -march=native
 
 all: $(NAME)
 
 $(NAME): $(LIBIA) $(LIB) $(OBJS) $(INC)
-	@$(CC) $(FLAGS) -O1 -O2 -O3 -Ofast -march=native  -o $(NAME) $(OBJS) $(LIBIA) $(LIB)
+	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(LIBIA) $(LIB)
 
 
 %.o: $(SRCS_PATH)/%.c $(INC)
-	@$(CC) $(FLAGS) -O1 -O2 -O3 -Ofast -march=native -c $< -o $@
+	@$(CC) $(FLAGS) -c $< -o $@
 
 $(LIBIA): $(LIB) FORCE
 	@make -C libia/

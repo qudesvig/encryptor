@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:32:38 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/21 16:43:51 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/23 15:52:15 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static double		rand_dbltmp(double min, double max)
 	  return (ret);
 }
 
-double	**creat_database(double max, double min)
+double	**creat_database(double max, double min, int mod)
 {
 	double	**data;
 	int		i;
@@ -52,7 +52,7 @@ double	**creat_database(double max, double min)
 		j = 0;
 		if (!(data[i] = (double*)malloc(sizeof(double) * NB_INPUT)))
 			return (NULL);
-		while (j < NB_INPUT)
+		while (j < ((mod == 0) ? NB_INPUT : NB_INPUT2))
 		{
 			data[i][j] = rand_dbltmp(min, max);
 			//printf("data[%d][%d] = %.100f\n", i, j, data[i][j]);

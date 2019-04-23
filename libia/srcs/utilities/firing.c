@@ -6,13 +6,13 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:01:45 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/21 18:40:44 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/23 17:24:09 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libia.h"
 
-void		apply_weight(t_netw *n, double *weight)
+void		apply_weight(t_netw *n, double *weight, int mod)
 {
 	int		i;
 	int		j;
@@ -21,7 +21,7 @@ void		apply_weight(t_netw *n, double *weight)
 
 	i = 0;
 	l = 0;
-	while (i < NB_LAYER - 1)
+	while (i < ((mod == 0) ? NB_LAYER : NB_LAYER2) - 1)
 	{
 		j = 0;
 		while (j < n->layer_size[i])

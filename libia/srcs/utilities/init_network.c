@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 15:31:45 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/21 19:36:36 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/23 17:07:12 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		fill_data_in(t_netw *n, double *data_in)
 	int		i;
 
 	i = 0;
-	while (i < NB_INPUT)
+	while (i < NB_LAYER)
 	{
 		n->input[i] = data_in[i];
 		i++;
@@ -86,13 +86,13 @@ int		init_network(t_netw *n, double *data_in, int *layer_size, double *bias)
 	return (0);
 }
 
-int		free_nw(t_netw *n)
+int		free_nw(t_netw *n, int mod)
 {
 	int		i;
 	int		j;
 
 	i = 0;
-	while (i < NB_LAYER - 1)
+	while (i < ((mod == 0) ? NB_LAYER : NB_LAYER2) - 1)
 	{
 		j = 0;
 		while (j < n->layer_size[i])

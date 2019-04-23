@@ -19,7 +19,8 @@ SRCS_UTILITIES_NAME = display_info.c \
 					  init_network.c \
 					  init_neurone.c \
 					  firing.c \
-					  export_weight.c
+					  export_weight.c \
+					  import_weight.c
 
 SRCS_GENETIC_NAME =
 
@@ -31,7 +32,7 @@ INC = includes/libia.h includes/neural_network.h
 
 INC_PATH = includes/
 
-FLAG = -Wall -Wextra -Werror
+FLAG = -Wall -Wextra -Werror -O1 -O2 -O3 -Ofast -march=native 
 
 SRCS_UTILITIES = $(addprefix $(SRCS_UTILITIES_PATH), $(SRCS_UTILITIES_NAME))
 
@@ -58,10 +59,10 @@ $(NAME): $(OBJS_UTILITES) $(OBJS_GENETIC) $(INC)
 	@echo "$(GRE)Done !$(DEF)"
 
 $(SRCS_UTILITIES_PATH)%.o: $(SRCS_UTILITIES_PATH)%.c $(INC)
-	@gcc $(FLAG) -Ofast -march=native -c $< -o $@ -I $(INC_PATH)
+	@gcc $(FLAG) -c $< -o $@ -I $(INC_PATH)
 
 $(SRCS_GENETIC)%.o: $(SRCS_GENETIC_PATH)%.c $(INC)
-	@gcc $(FLAG) -Ofast -march=native -c $< -o $@ -I $(INC_PATH)
+	@gcc $(FLAG) -c $< -o $@ -I $(INC_PATH)
 
 clean:
 	@rm -rf $(OBJS)

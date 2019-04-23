@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:40:56 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/21 21:28:13 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/23 20:28:27 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	training(t_netw *n, double **data)
 
 	i = 0;
 	epoch = 0;
-	lr = 0.1;
+	lr = 0.2;
 	cost = 0;
 	newcost = 0;
 	if (!(weight_grad = (long double*)malloc(sizeof(long double) * NB_WEIGHT)))
@@ -101,7 +101,7 @@ void	training(t_netw *n, double **data)
 	tabdbl_bzero(weight_grad, NB_WEIGHT);
 	weight_grad = back_p(data, n, weight_grad, &cost);
 	apply_grad(n, weight_grad, lr);
-	while (epoch < 1000000)
+	while (epoch < 3000000)
 	{
 		printf("---------------epoch %d--------------\n", epoch);
 		tabdbl_bzero(weight_grad, NB_WEIGHT);
@@ -126,12 +126,13 @@ void	training(t_netw *n, double **data)
 		{
 			cost = newcost;
 			newcost = 0;
-			if (cost < lr * 20)
+			if (cost < lr * 15)
 				lr /= 1.1;
 			apply_grad(n, weight_grad, lr);
 			epoch++;
 		}
+		if (epoch != 0 && epoch % 100000 == 0)
+			export_weight(n, "config/training");
 	}
 	free(weight_grad);
-	return ;
 }

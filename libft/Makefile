@@ -1,5 +1,19 @@
 NAME = libft.a
 
+DEF = \033[0m
+GRA = \033[1m
+SOU = \033[4m
+BLI = \033[5m
+BLA = \033[30m
+RED = \033[31m
+GRE = \033[32m
+YEL = \033[33m
+BLU = \033[34m
+PUR = \033[35m
+CYA = \033[36m
+WHI = \033[37m
+ORG = \033[1;31m
+
 SRCS = ft_memset.c \
 	   ft_bzero.c \
 	   ft_memcpy.c \
@@ -62,25 +76,38 @@ SRCS = ft_memset.c \
 	   ft_lensplit.c \
 	   ft_abs.c \
 	   ft_lstpush_back.c \
+	   ft_lstpush_front.c \
 	   ft_powerten.c \
+	   ft_pctab.c \
+	   get_next_line.c \
+	   quick_sort.c \
+	   ft_swap.c \
+	   get_opt.c
 
-FLAG = -Wall -Wextra -Werror
+INC = includes/libft.h
+
+INC_PATH = includes/
+
+FLAG = -Wall -Wextra -Werror -O1 -O2 -O3 -Ofast -march=native 
 
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS) libft.h
+	@echo "Making $(RED)$(SOU)Libft$(DEF)$(RED)...$(DEF)"
 	@ar rc $(NAME) $(OBJS)
 	@ranlib $(NAME)
+	@echo "$(GRE)Done !$(DEF)"
 
-$(OBJS): $(SRCS)
-	@gcc $(FLAG) -Ofast -march=native -c $(SRCS)
+%.o: %.c $(INC)
+	@gcc $(FLAG) -c $< -o $@ -I $(INC_PATH)
 
 clean:
 	@rm -rf $(OBJS)
 
 fclean: clean
+	@echo "$(RED)Libft$(DEF) deleted"
 	@rm -rf $(NAME)
 
 re: fclean all

@@ -1,20 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_abs.c                                           :+:      :+:    :+:   */
+/*   ft_pctab.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/17 16:16:15 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/03/03 05:06:58 by qudesvig         ###   ########.fr       */
+/*   Created: 2018/11/26 20:46:41 by qudesvig          #+#    #+#             */
+/*   Updated: 2018/11/26 20:48:14 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-unsigned int		ft_abs(int n)
+void	ft_pctab(char **tab)
 {
-	if (n < 0 && n != -2147483648)
-		return ((unsigned int)-n);
-	return (n);
+	int i;
+
+	i = 0;
+	while (tab[i])
+	{
+		ft_putendl(tab[i]);
+		i++;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 16:21:06 by qudesvig          #+#    #+#             */
-/*   Updated: 2018/11/20 10:58:18 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/03/07 22:23:20 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char				*ft_strnstr(const char *haystack,
 						const char *needle, size_t len);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
-int					ft_atoi(const char *str);
+long long			ft_atoi(const char *str);
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
 int					ft_isalnum(int c);
@@ -87,5 +87,12 @@ int					ft_nbwrd(char const *s, char c);
 int					ft_lensplit(char const *s, char c);
 unsigned int		ft_abs(int n);
 void				ft_lstpush_back(t_list **lst, t_list *new);
+void				ft_lstpush_front(t_list **lst, t_list *new);
 int					ft_powerten(int n);
+int					get_next_line(const int fd, char **line);
+void				ft_pctab(char **tab);
+void				ft_swap(int *a, int *b);
+void				quick_sort(int *tab, int start, int end);
+void				ft_display_tab(int *tab, int len);
+char				*get_opt(int ac, char **av, char *opt);
 #endif

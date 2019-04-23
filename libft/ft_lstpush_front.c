@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_abs.c                                           :+:      :+:    :+:   */
+/*   ft_lstpush_front.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/17 16:16:15 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/03/03 05:06:58 by qudesvig         ###   ########.fr       */
+/*   Created: 2019/02/06 09:49:28 by qudesvig          #+#    #+#             */
+/*   Updated: 2019/02/06 10:01:08 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-unsigned int		ft_abs(int n)
+void	ft_lstpush_front(t_list **list, t_list *new)
 {
-	if (n < 0 && n != -2147483648)
-		return ((unsigned int)-n);
-	return (n);
+	if (!(*list) || !(new))
+		return ;
+	new->next = *list;
+	*list = new;
 }
