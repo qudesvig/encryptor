@@ -6,133 +6,124 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:40:56 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/23 20:28:27 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/01 14:17:55 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/encryptor.h"
 
-double		rand_dbl(double min, double max)
+double		*fill_dbltab_rand(double *dest, unsigned int size)
 {
-	/*static char        buff[BUFF_RAND + 1];
-	static int         index = 0;
-	static int         step = 0;
-	static int             fd = 0;
-	double             percent;
-	double             ret;
-
-	if (fd == 0)
-		fd = open("/dev/urandom", O_RDONLY);
-	if (index > BUFF_RAND - 2)
-	{
-		index = 0;
-		step++;
-	}
-	if (index == 0 && step == 10)
-	{
-		if (read(fd, buff, BUFF_RAND) == -1)
-		{
-			ft_putendl("read error!");
-			return (0);
-		}
-		buff[BUFF_RAND] = '\0';
-		step = 0;
-	}
-	ret = (double)((double)buff[index] * (double)buff[index + 1]);
-	printf("buff = %s\n", buff);
-	printf("btw index %d : %d & index %d : %d\n", index, buff[index], index + 1, buff[index + 1]);
-	percent = ret / 16129;
-	printf("%.10f - %.10f\n", max - min, percent);
-	ret = ((max - min) * percent);
-	index += 2;
-	printf("in rnd_dbl ret = %.50f\n", ret);
-	return (ret);*/
-	double range = (max - min);
-	double div = RAND_MAX / range;
-	return min + (rand() / div);
-}
-
-void	tabdbl_bzero(long double *tab, int size)
-{
-	int i;
+	unsigned int i;
 
 	i = 0;
 	while (i < size)
 	{
-		tab[i] = 0;
+		dest[i] = rand_dbl(-5, 5);
 		i++;
 	}
+	return (dest);
 }
 
-long double	display_total_cost(long double *cost)
+t_pop		*init_pop(t_netw *n)
 {
-	int	i;
-	long double totalc;
-
+	int		i;
+	double	*weights;
+	double	*bias;
+	t_pop	*pop;
 
 	i = 0;
-	totalc = 0;
-	while (i < DATASIZE)
+	if (!(pop = (t_pop*)malloc(sizeof(t_pop) * POPSIZE))
+			|| !(weights = get_weights(n))
+			|| !(bias = get_bias(n)))
+		return (NULL);
+	while (i < POPSIZE)
 	{
-		totalc += cost[i];
-		//printf("localcost = %.25Lf\n", cost[i]);
+		pop[i].cost = 0;
+		if (!(pop[i].bias = tabdbl_dup(bias, NB_NEURONE - NB_INPUT))
+				|| !(pop[i].weights = tabdbl_dup(weights, NB_WEIGHT)))
+			return (NULL);
+		if (i < NB_NEURONE)
+			pop[i].weights = fill_dbltab_rand(pop[i].weights, NB_WEIGHT);
+		else
+			pop[i].bias = fill_dbltab_rand(pop[i].bias, NB_NEURONE - NB_INPUT);
 		i++;
 	}
-	printf("\naverage of totalc = %.25Lf\n", totalc / DATASIZE);
-	return (totalc / DATASIZE);
+	return (pop);
 }
 
-void	training(t_netw *n, double **data)
+t_pop		*test_pop(t_pop *pop, double **data, t_netw *n, int under)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < POPSIZE)
+	{
+		j = 0;
+		pop[i].cost = 0;
+		apply_weight(n, pop[i].weights);
+		apply_bias(n, pop[i].bias);
+		while (j < DATASIZE)
+		{
+			fill_nw(data[j], n);
+			firing(n);
+			pop[i].cost += ft_calc_cost(n, data[j]);
+			j++;
+		}
+		i++;
+	}
+	return (get_elite(pop, under));
+}
+
+double		elitecost(t_pop *elite)
+{
+	int		i;
+	double	cost;
+
+	i = 0;
+	cost = 0;
+	while (i < 100 && elite[i].index != -1)
+	{
+		printf("cost %d : index %d = %.25f\n", i, elite[i].index, elite[i].cost);
+		cost += elite[i].cost;
+		i++;
+	}
+	return (cost / i);
+}
+
+int			genetic_training(t_netw *n, double **data)
 {
 	int			epoch;
-	long double cost;
-	long double newcost;
-	long double	*weight_grad;
-	double		lr;
-	int			i; //for test
+	t_pop		*elite;
+	t_pop		*pop;
+	double		best;
+	double		cost;
+	int			under;
 
-	i = 0;
 	epoch = 0;
-	lr = 0.2;
-	cost = 0;
-	newcost = 0;
-	if (!(weight_grad = (long double*)malloc(sizeof(long double) * NB_WEIGHT)))
-		return ;
-	tabdbl_bzero(weight_grad, NB_WEIGHT);
-	weight_grad = back_p(data, n, weight_grad, &cost);
-	apply_grad(n, weight_grad, lr);
-	while (epoch < 3000000)
+	best = 10000000000;
+	cost = 10000000000;
+	under = 0;
+	if (!(pop = init_pop(n)))
+		return (-1);
+	while (epoch < 100)
 	{
-		printf("---------------epoch %d--------------\n", epoch);
-		tabdbl_bzero(weight_grad, NB_WEIGHT);
-		weight_grad = back_p(data, n, weight_grad, &newcost);
-		printf("cost = %.50Lf vs newcost = %.50Lf\n", cost, newcost);
-		if (newcost > cost)
-		{
-			if (newcost < 0.0000001)
-			{
-				printf("end at epoch %d\n", epoch);
-				return ;
-			}
-			epoch = 0;
-			cost = 0;
-			lr = 0.1;
-			reset_nw(n);
-			tabdbl_bzero(weight_grad, NB_WEIGHT);
-			weight_grad = back_p(data, n, weight_grad, &cost);
-			apply_grad(n, weight_grad, lr);
-		}
-		else
-		{
-			cost = newcost;
-			newcost = 0;
-			if (cost < lr * 15)
-				lr /= 1.1;
-			apply_grad(n, weight_grad, lr);
-			epoch++;
-		}
-		if (epoch != 0 && epoch % 100000 == 0)
-			export_weight(n, "config/training");
+		printf("-----------gen %d-----------------\n", epoch);
+		elite = test_pop(pop, data, n, under);
+		cost = elitecost(elite);
+		printf("cost = %.25f\n", cost);
+		under = is_under(cost, best);
+		if (cost < best)
+			best = cost;
+		printf("best = %.25f\n", best);
+		gang_bang(elite, pop, under);
+		ft_putendl("-----------end new gen-----------------");
+		epoch++;
 	}
-	free(weight_grad);
+	apply_weight(n, elite[0].weights);
+	apply_bias(n, elite[0].bias);
+	export_weight(n, "config/weights");
+	export_bias(n, "config/bias");
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 12:55:35 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/23 18:58:24 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/01 15:31:37 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,23 @@
 # include "../libia/includes/libia.h"
 # include "../libft/libft.h"
 # define PUT ft_putendl("there");
-# define DATASIZE 10000
-# define BUFF_RAND 4194304
 
-double			*encryptor(t_netw *n);
+double			*irc_test(t_netw *n);
 void			multi_encryptor(t_netw *n);
 void			init_encr(void);
-double			rand_dbl(double min, double max);
-void			tabdbl_bzero(long double *tab, int size);
+void			tabldbl_bzero(long double *tab, int size);
 
-double			*fill_data(double *data, int mod);
-void			fill_nw(double *data, t_netw *n, int mod);
-double			*init_bias(double *bias, int mod);
-int				*init_layer_size(int *layer_size, int mod);
-void			reset_nw(t_netw *n);
+double			*fill_data(double *data);
+double			*init_bias(double *bias);
+int				*init_layer_size(int *layer_size);
 
-int				init_multi_encryptor(t_netw *n, int *layer_size, double *bias);
-void			fill_n2_weight(t_netw *n2, double *weights);
+int				genetic_training(t_netw *n, double **data);
+void			gang_bang(t_pop *elit, t_pop *pop, int under);
+double			*evolve_weights(int n, double *weights, int under);
+double			*evolve_bias(int n, double *bias, int under);
+t_pop			*get_elite(t_pop *pop, int under);
+int				is_under(double new, double last);
 
-void			apply_grad(t_netw *n, long double *grad, double lr);
-long double		*back_p(double **data, t_netw *n, long double *grad, long double *cost);
-
-void			training(t_netw *n, double **data);
-
-double			**creat_database(double max, double min, int mod);
-
-long double		display_total_cost(long double *cost);
+void			put_dbltab(double *tab, unsigned int size);
+void		display_elite(t_pop *elite);
 #endif

@@ -1,33 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_neurone.c                                     :+:      :+:    :+:   */
+/*   fct.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/27 15:31:20 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/29 15:07:16 by qudesvig         ###   ########.fr       */
+/*   Created: 2019/04/30 12:33:57 by qudesvig          #+#    #+#             */
+/*   Updated: 2019/05/01 17:28:28 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libia.h"
+#include "../includes/encryptor.h"
 
-int					init_neurone(t_neurone *n, int nb_weight, double (*f)(double))
+void		put_dbltab(double *tab, unsigned int size)
 {
-	int		i;
+	unsigned int i;
 
 	i = 0;
-	n->act = f;
-	n->in = 0;
-	n->in = 0;
-	n->bias = BIAS;
-	n->nb_out = nb_weight;
-	if (!(n->weight = (long double*)malloc(sizeof(long double) * nb_weight)))
-		return (-1);
-	while (i < nb_weight)
+	while (i < size)
 	{
-		n->weight[i] = rand_dbl(-5, 5);
+		printf("%.25f\n", tab[i]);
 		i++;
+	}
+}
+
+int			is_under(double new, double last)
+{
+	double	max;
+	double	min;
+
+	max = 10000000;
+	min = 0.00001;
+	while (max > min)
+	{
+		if (new > max && last < max)
+			return (1);
+		max /= 4;
 	}
 	return (0);
 }
+

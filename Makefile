@@ -4,12 +4,13 @@ SRCS_PATH= srcs/
 
 SRCS_NAME= main.c \
 		   encryptor.c \
-		   multi_encryptor.c \
-		   init_multi_encryptor.c \
 		   filling_netw.c \
-		   database.c \
+		   display.c \
 		   training.c \
-		   backp.c
+		   gang_bang.c \
+		   evolve.c \
+		   get_elit.c \
+		   fct.c
 
 SRCS= $(addprefix $(SRCS_PATH), $(SRCS_NAME))
 
@@ -28,7 +29,7 @@ FLAGS= -Wall -Wextra -Werror -O1 -O2 -O3 -Ofast -march=native
 all: $(NAME)
 
 $(NAME): $(LIBIA) $(LIB) $(OBJS) $(INC)
-	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(LIBIA) $(LIB)
+	@$(CC) $(FLAGS) -lpthread  -o $(NAME) $(OBJS) $(LIBIA) $(LIB)
 
 
 %.o: $(SRCS_PATH)/%.c $(INC)

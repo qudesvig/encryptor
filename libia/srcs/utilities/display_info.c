@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:05:10 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/17 17:28:00 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/04/29 15:55:26 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	mapping_netw(t_netw n)
 	int		i;
 	int		j;
 	int		k;
+	int		l;
 
 	i = 0;
 	k = 0;
@@ -62,6 +63,7 @@ void	mapping_netw(t_netw n)
 	{
 		j = 0;
 		printf("layer %d\n", i);
+		l = 0;
 		while (j < n.layer_size[i])
 		{
 			printf("%d\t", k);

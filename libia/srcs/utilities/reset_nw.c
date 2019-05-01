@@ -1,33 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_neurone.c                                     :+:      :+:    :+:   */
+/*   reset_nw.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/27 15:31:20 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/29 15:07:16 by qudesvig         ###   ########.fr       */
+/*   Created: 2019/04/29 15:38:15 by qudesvig          #+#    #+#             */
+/*   Updated: 2019/04/29 15:38:53 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libia.h"
 
-int					init_neurone(t_neurone *n, int nb_weight, double (*f)(double))
+void		reset_nw(t_netw *n)
 {
 	int		i;
+	int		j;
+	int		k;
 
-	i = 0;
-	n->act = f;
-	n->in = 0;
-	n->in = 0;
-	n->bias = BIAS;
-	n->nb_out = nb_weight;
-	if (!(n->weight = (long double*)malloc(sizeof(long double) * nb_weight)))
-		return (-1);
-	while (i < nb_weight)
+	k = 0;
+	while (k < NB_LAYER - 1)
 	{
-		n->weight[i] = rand_dbl(-5, 5);
-		i++;
+		i = 0;	
+		while (i < n->layer_size[k])
+		{
+			j = 0;
+			while (j < n->layer_size[k + 1])
+			{
+				n->netw[k][i].weight[j] = rand_dbl(-1, 1);
+				usleep(10);
+				j++;
+			}
+			i++;
+		}
+		k++;
 	}
-	return (0);
 }

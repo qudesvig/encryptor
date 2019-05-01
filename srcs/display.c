@@ -1,33 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_neurone.c                                     :+:      :+:    :+:   */
+/*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/27 15:31:20 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/29 15:07:16 by qudesvig         ###   ########.fr       */
+/*   Created: 2019/04/24 17:56:05 by qudesvig          #+#    #+#             */
+/*   Updated: 2019/04/25 21:18:56 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libia.h"
+#include "../includes/encryptor.h"
 
-int					init_neurone(t_neurone *n, int nb_weight, double (*f)(double))
-{
-	int		i;
-
-	i = 0;
-	n->act = f;
-	n->in = 0;
-	n->in = 0;
-	n->bias = BIAS;
-	n->nb_out = nb_weight;
-	if (!(n->weight = (long double*)malloc(sizeof(long double) * nb_weight)))
-		return (-1);
-	while (i < nb_weight)
-	{
-		n->weight[i] = rand_dbl(-5, 5);
-		i++;
-	}
-	return (0);
-}

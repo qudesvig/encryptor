@@ -1,33 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_neurone.c                                     :+:      :+:    :+:   */
+/*   calculus.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/27 15:31:20 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/29 15:07:16 by qudesvig         ###   ########.fr       */
+/*   Created: 2019/04/29 15:24:16 by qudesvig          #+#    #+#             */
+/*   Updated: 2019/04/30 20:42:28 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libia.h"
+#include "../../../includes/libia.h"
 
-int					init_neurone(t_neurone *n, int nb_weight, double (*f)(double))
+long double		ft_calc_cost(t_netw *n, double *target)
+{
+	int			i;
+	long double cost;
+
+	i = 0;
+	cost = 0;
+	while (i < NB_OUTPUT)
+	{
+		cost += (n->netw[NB_LAYER - 1][i].out - target[i]) * (n->netw[NB_LAYER - 1][i].out - target[i]);
+		i++;
+	}
+	return (cost);
+}
+
+long double *averaging_grad(long double *grad)
 {
 	int		i;
 
 	i = 0;
-	n->act = f;
-	n->in = 0;
-	n->in = 0;
-	n->bias = BIAS;
-	n->nb_out = nb_weight;
-	if (!(n->weight = (long double*)malloc(sizeof(long double) * nb_weight)))
-		return (-1);
-	while (i < nb_weight)
+	while (i < NB_WEIGHT)
 	{
-		n->weight[i] = rand_dbl(-5, 5);
+		grad[i] /= DATASIZE;
 		i++;
 	}
-	return (0);
+	return (grad);
 }

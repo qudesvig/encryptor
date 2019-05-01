@@ -20,11 +20,20 @@ SRCS_UTILITIES_NAME = display_info.c \
 					  init_neurone.c \
 					  firing.c \
 					  export_weight.c \
+					  database.c \
+					  reset_nw.c \
 					  import_weight.c
 
 SRCS_GENETIC_NAME =
 
+SRCS_BACKP_NAME = backp.c \
+				  calculus.c \
+				  apply_grad.c \
+				  fct.c
+
 SRCS_GENETIC_PATH = srcs/training/genetic/
+
+SRCS_BACKP_PATH = srcs/training/backp/
 
 SRCS_UTILITIES_PATH = srcs/utilities/
 
@@ -38,20 +47,25 @@ SRCS_UTILITIES = $(addprefix $(SRCS_UTILITIES_PATH), $(SRCS_UTILITIES_NAME))
 
 SRCS_GENETIC = $(addprefix $(SRCS_GENETIC_PATH), $(SRCS_GENETIC_NAME))
 
+SRCS_GENETIC = $(addprefix $(SRCS_BACKP_PATH), $(SRCS_BACKP_NAME))
+
 SRCS_PATH = srcs/
 
 SRCS = $(SRCS_UTILITIES)
 SRCS += $(SRCS_GENETIC)
+SRCS += $(SRCS_BACKP)
 
 OBJS_UTILITES = $(SRCS_UTILITIES:.c=.o)
 
 OBJS_GENETIC = $(SRCS_GENETIC:.c=.o)
 
+OBJS_BACKP = $(SRCS_BACKP:.c=.o)
+
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS_UTILITES) $(OBJS_GENETIC) $(INC)
+$(NAME): $(OBJS_UTILITES) $(OBJS_BACKP) $(OBJS_GENETIC) $(INC)
 	@echo "Making $(RED)$(SOU)Libia$(DEF)$(RED)...$(DEF)"
 	@ar rc $(NAME) $(OBJS)
 	@ranlib $(NAME)
@@ -61,7 +75,10 @@ $(NAME): $(OBJS_UTILITES) $(OBJS_GENETIC) $(INC)
 $(SRCS_UTILITIES_PATH)%.o: $(SRCS_UTILITIES_PATH)%.c $(INC)
 	@gcc $(FLAG) -c $< -o $@ -I $(INC_PATH)
 
-$(SRCS_GENETIC)%.o: $(SRCS_GENETIC_PATH)%.c $(INC)
+$(SRCS_GENETIC_PATH)%.o: $(SRCS_GENETIC_PATH)%.c $(INC)
+	@gcc $(FLAG) -c $< -o $@ -I $(INC_PATH)
+
+$(SRCS_BACKP_PATH)%.o: $(SRCS_BACKP_PATH)%.c $(INC)
 	@gcc $(FLAG) -c $< -o $@ -I $(INC_PATH)
 
 clean:
