@@ -6,34 +6,50 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/30 13:34:39 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/01 17:28:08 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/03 18:47:50 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/encryptor.h"
 
-double		*evolve_weights(int n, double *base, int under)
+double		*evolve_weights(int n, double *base, int comeback, int nb_change)
 {
-	int		i;
-	static int lr = 2;
-	double		ch;
+	int				i;
+	int				j;
+	static double	lr = 2;
+	double			ch;
 
-	if (under == 1)
-		lr /= 2;
-	i = n % NB_WEIGHT;
-	ch = rand_dbl((-1 * lr), (1 * lr));
-	base[i] += ch;
+	if (comeback > 20)
+		lr = 4;
+	else
+		lr = 2;
+	j = 0;
+	i = n % (NB_WEIGHT - nb_change);
+	while (j < nb_change)
+	{
+		ch = rand_dbl((-1 * lr), (1 * lr));
+		base[i + j] += ch;
+		j++;
+	}
 	return (base);
 }
 
-double		*evolve_bias(int n, double *base, int under)
+double		*evolve_bias(int n, double *base, int comeback, int nb_change)
 {
-	int			i;
-	static int	lr = 4;
+	int				i;
+	int				j;
+	static double	lr = 1;
 
-	if (under == 1)
-		lr /= 2;
-	i = n % NB_BIAS;
-	base[i] += rand_dbl(-1 * lr, 1 * lr);
+	if (comeback > 20)
+		lr = 3;
+	else
+		lr = 1;
+	j = 0;
+	i = n % (NB_BIAS - nb_change);
+	while (j < nb_change)
+	{
+		base[i + j] += rand_dbl(-1 * lr, 1 * lr);
+		j++;
+	}
 	return (base);
 }

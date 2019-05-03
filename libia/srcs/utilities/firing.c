@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:01:45 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/30 13:03:07 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/03 19:57:59 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ void		apply_bias(t_netw *n, double *bias)
 	int		j;
 	int		l;
 
-	i = 0;
+	i = 1;
 	l = 0;
-	while (i < NB_LAYER - 1)
+	while (i < NB_LAYER)
 	{
 		j = 0;
 		while (j < n->layer_size[i])

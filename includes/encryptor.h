@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 12:55:35 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/01 15:31:37 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/03 23:23:54 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,33 @@
 
 double			*irc_test(t_netw *n);
 void			multi_encryptor(t_netw *n);
-void			init_encr(void);
+void			init_encr(int mod);
 void			tabldbl_bzero(long double *tab, int size);
 
 double			*fill_data(double *data);
 double			*init_bias(double *bias);
 int				*init_layer_size(int *layer_size);
+t_netw			*prepare_init_netw(t_netw *n, double *data);
 
 int				genetic_training(t_netw *n, double **data);
-void			gang_bang(t_pop *elit, t_pop *pop, int under);
-double			*evolve_weights(int n, double *weights, int under);
-double			*evolve_bias(int n, double *bias, int under);
+void			gang_bang(t_pop *elit, t_pop *pop, int comeback);
+double			*evolve_weights(int n, double *weights, int comeback, int nb_change);
+double			*evolve_bias(int n, double *bias, int comeback, int nb_change);
 t_pop			*get_elite(t_pop *pop, int under);
 int				is_under(double new, double last);
 
 void			put_dbltab(double *tab, unsigned int size);
-void		display_elite(t_pop *elite);
+double			*add_dbltab_rand(double *dest, unsigned int size);
+void			display_elite(t_pop *elite);
+
+void			saving_for_cmb(t_pop *dest, t_pop src);
+void			reinit_pop(t_pop base, t_pop *pop);
+
+t_pop			*test_pop(t_pop *pop, double **data, int comeback);
+
+void			saving_config(t_pop best, t_netw *n, int mod);
+int				export_weight_tab(double *tab, char *name);
+
+void			free_elite(t_pop *elite);
+void			free_data(double **data);
 #endif

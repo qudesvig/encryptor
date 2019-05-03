@@ -1,41 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   calculus.c                                         :+:      :+:    :+:   */
+/*   free_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/29 15:24:16 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/01 20:51:47 by qudesvig         ###   ########.fr       */
+/*   Created: 2019/05/03 23:20:30 by qudesvig          #+#    #+#             */
+/*   Updated: 2019/05/03 23:21:34 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/libia.h"
+#include "../includes/encryptor.h"
 
-long double		ft_calc_cost(t_netw *n, double *target)
-{
-	int			i;
-	long double cost;
-
-	i = 0;
-	cost = 0;
-	while (i < NB_OUTPUT)
-	{
-		cost += (n->netw[NB_LAYER - 1][i].out - target[i]) * (n->netw[NB_LAYER - 1][i].out - target[i]);
-		i++;
-	}
-	return (cost);
-}
-
-long double *averaging_grad(long double *grad)
+void		free_data(double **data)
 {
 	int		i;
 
 	i = 0;
-	while (i < NB_WEIGHT)
+	while (i < DATASIZE)
 	{
-		grad[i] /= DATASIZE;
+		free(data[i]);
 		i++;
 	}
-	return (grad);
+	free(data);
+}
+
+void		free_elite(t_pop *elite)
+{
+	int		i;
+
+	i = 0;
+	while (i < ELITESIZE)
+	{
+		free(elite[i].weights);
+		free(elite[i].bias);
+		i++;
+	}
+	free(elite);
 }

@@ -10,6 +10,10 @@ SRCS_NAME= main.c \
 		   gang_bang.c \
 		   evolve.c \
 		   get_elit.c \
+		   comeback.c \
+		   testing_pop.c \
+		   saving.c \
+		   free_env.c \
 		   fct.c
 
 SRCS= $(addprefix $(SRCS_PATH), $(SRCS_NAME))

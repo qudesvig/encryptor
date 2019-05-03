@@ -6,11 +6,32 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/30 12:33:57 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/01 17:28:28 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/03 22:02:32 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/encryptor.h"
+
+int			is_under(double new, double last)
+{
+	double	max;
+	double	min;
+
+	max = 1000;
+	min = 0.00001;
+	printf("is under for %f && %f\n", new, last);
+	while (max > min)
+	{
+		if (new < max && last > max)
+		{
+			ft_putendl("return (1)");
+			return (1);
+		}
+		max /= 1.2;
+	}
+	ft_putendl("return (0)");
+	return (0);
+}
 
 void		put_dbltab(double *tab, unsigned int size)
 {
@@ -24,19 +45,15 @@ void		put_dbltab(double *tab, unsigned int size)
 	}
 }
 
-int			is_under(double new, double last)
+double		*add_dbltab_rand(double *dest, unsigned int size)
 {
-	double	max;
-	double	min;
+	unsigned int i;
 
-	max = 10000000;
-	min = 0.00001;
-	while (max > min)
+	i = 0;
+	while (i < size)
 	{
-		if (new > max && last < max)
-			return (1);
-		max /= 4;
+		dest[i] += rand_dbl(-2, 2);
+		i++;
 	}
-	return (0);
+	return (dest);
 }
-

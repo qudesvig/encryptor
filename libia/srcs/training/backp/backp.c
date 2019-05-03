@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 16:30:59 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/29 15:36:56 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/03 15:32:01 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void		calc_grad(t_netw *n, long double *gradw, long double *gradb, double *targe
 			k++;
 		}
 		if (l > 1)
-			newtarget[i] = n->netw[l - 1][i].out - newtarget[i] / j; // a diviser par le nombre de neurone de la couche l
+			newtarget[i] = n->netw[l - 1][i].out - newtarget[i]; // a diviser par le nombre de neurone de la couche l
 		i++;
 	}
 	chain_rule(n, gradw, gradb, target, l);

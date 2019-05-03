@@ -6,24 +6,11 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:40:56 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/01 14:17:55 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/03 23:20:49 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/encryptor.h"
-
-double		*fill_dbltab_rand(double *dest, unsigned int size)
-{
-	unsigned int i;
-
-	i = 0;
-	while (i < size)
-	{
-		dest[i] = rand_dbl(-5, 5);
-		i++;
-	}
-	return (dest);
-}
 
 t_pop		*init_pop(t_netw *n)
 {
@@ -40,40 +27,16 @@ t_pop		*init_pop(t_netw *n)
 	while (i < POPSIZE)
 	{
 		pop[i].cost = 0;
-		if (!(pop[i].bias = tabdbl_dup(bias, NB_NEURONE - NB_INPUT))
+		if (!(pop[i].bias = tabdbl_dup(bias, NB_BIAS))
 				|| !(pop[i].weights = tabdbl_dup(weights, NB_WEIGHT)))
 			return (NULL);
-		if (i < NB_NEURONE)
-			pop[i].weights = fill_dbltab_rand(pop[i].weights, NB_WEIGHT);
-		else
-			pop[i].bias = fill_dbltab_rand(pop[i].bias, NB_NEURONE - NB_INPUT);
+		if (i > 0 && i < NB_NEURONE)
+			pop[i].weights = add_dbltab_rand(pop[i].weights, NB_WEIGHT - i % NB_WEIGHT);
+		else if (i > 0)
+			pop[i].bias = add_dbltab_rand(pop[i].bias, NB_BIAS - i % NB_BIAS);
 		i++;
 	}
 	return (pop);
-}
-
-t_pop		*test_pop(t_pop *pop, double **data, t_netw *n, int under)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	while (i < POPSIZE)
-	{
-		j = 0;
-		pop[i].cost = 0;
-		apply_weight(n, pop[i].weights);
-		apply_bias(n, pop[i].bias);
-		while (j < DATASIZE)
-		{
-			fill_nw(data[j], n);
-			firing(n);
-			pop[i].cost += ft_calc_cost(n, data[j]);
-			j++;
-		}
-		i++;
-	}
-	return (get_elite(pop, under));
 }
 
 double		elitecost(t_pop *elite)
@@ -85,7 +48,8 @@ double		elitecost(t_pop *elite)
 	cost = 0;
 	while (i < 100 && elite[i].index != -1)
 	{
-		printf("cost %d : index %d = %.25f\n", i, elite[i].index, elite[i].cost);
+		if (i % 10 == 0)
+			printf("cost %d : index %d = %f\n", i, elite[i].index, elite[i].cost);
 		cost += elite[i].cost;
 		i++;
 	}
@@ -97,33 +61,43 @@ int			genetic_training(t_netw *n, double **data)
 	int			epoch;
 	t_pop		*elite;
 	t_pop		*pop;
+	t_pop		save;
 	double		best;
 	double		cost;
-	int			under;
+	int			comeback;
 
 	epoch = 0;
 	best = 10000000000;
 	cost = 10000000000;
-	under = 0;
+	save.index = -1;
+	comeback = 0;
 	if (!(pop = init_pop(n)))
 		return (-1);
-	while (epoch < 100)
+	while (epoch < 1000)
 	{
 		printf("-----------gen %d-----------------\n", epoch);
-		elite = test_pop(pop, data, n, under);
+		elite = test_pop(pop, data, comeback);
 		cost = elitecost(elite);
-		printf("cost = %.25f\n", cost);
-		under = is_under(cost, best);
-		if (cost < best)
-			best = cost;
-		printf("best = %.25f\n", best);
-		gang_bang(elite, pop, under);
+		printf("cost = %f\ncomeback = %d\n", cost, comeback);
+		if (elite[0].cost < best)
+		{
+			saving_for_cmb(&save, elite[0]);
+			saving_config(elite[0], n, 1);
+			comeback = 0;
+			best = elite[0].cost;
+		}
+		printf("best = %f\n", best);
+		if (comeback > 50)
+		{
+			reinit_pop(save, pop);
+			comeback = 0;
+		}
+		else
+			gang_bang(elite, pop, comeback);
 		ft_putendl("-----------end new gen-----------------");
+		comeback++;
 		epoch++;
 	}
-	apply_weight(n, elite[0].weights);
-	apply_bias(n, elite[0].bias);
-	export_weight(n, "config/weights");
-	export_bias(n, "config/bias");
+	saving_config(elite[0], n, 0);
 	return (0);
 }

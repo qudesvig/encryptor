@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/30 13:35:19 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/01 17:29:04 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/03 16:30:42 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void		init_elite(t_pop *elite, t_pop *pop)
 	int		i;
 
 	i = 0;
-	while (i < 100)
+	while (i < ELITESIZE)
 	{
 		elite[i].cost = 1000000000000;
 		elite[i].index = -1;
@@ -27,12 +27,12 @@ void		init_elite(t_pop *elite, t_pop *pop)
 	}
 }
 
-void		push_in(t_pop new, t_pop *elite, int i, int pos)
+void		push_in(t_pop new, t_pop *elite, int i, int pos, int mod)
 {
 	int		j;
 
-	j = 5;
-	while (j >= i)
+	j = ELITESIZE - 2;
+	while (j >= i && mod == 0)
 	{
 		elite[j + 1].cost = elite[j].cost;
 		elite[j + 1].index = elite[j].index;
@@ -58,40 +58,6 @@ void		get_elite_config(t_pop *elite, t_pop *pop)
 	}
 }
 
-void		add_rand_to_pop(t_pop *elite, int under)
-{
-	int			i;
-	int			j;
-	static int	lr = 4;
-
-	i = 0;
-	if (under == 1)
-		lr /= 2;
-	while (i < ELITESIZE && elite[i].index != -1)
-		i++;
-	i = (i < ELITESIZE - ELITESIZE / 10) ? i : ELITESIZE - ELITESIZE / 10;
-	while (i < ELITESIZE)
-	{
-		elite[i].weights = tabdbl_dup(elite[0].weights, NB_WEIGHT);
-		elite[i].bias = tabdbl_dup(elite[0].bias, NB_BIAS);
-		j = 0;
-		while (j < NB_WEIGHT)
-		{
-			elite[i].weights[j] += rand_dbl(-1 * lr, 1 * lr);
-			j++;
-		}
-		j = 0;
-		while (j < NB_BIAS)
-		{
-			elite[i].bias[j] += rand_dbl(-1 * lr, 1 * lr);
-			j++;
-		}
-		elite[i].cost = -1;
-		elite[i].index = -1;
-		i++;
-	}
-}
-
 void		display_elite(t_pop *elite)
 {
 	int 	i;
@@ -104,27 +70,31 @@ void		display_elite(t_pop *elite)
 	}
 }
 
-int			videur(double newcost, t_pop *elite, int below)
+int			videur(double newcost, t_pop *elite, int j, int below)
 {
-	int				i;
-	static double	taux = 0.0001;
+	static double	taux = 1;
 
-	i = 0;
-	if (below == 1)
-		taux *= 10;
-	while (i < 100)
+	if (newcost > elite[0].cost * 7)
+		return (-1);
+	//if (below == 1)
+	//	taux *= 10;
+	(void)below;
+	while (j > 0)
 	{
-		if ((long int)(newcost * taux) == (long int)(elite[i].cost * taux))
+		if ((long int)(newcost * taux) == (long int)(elite[j].cost * taux))
+			return (-1);
+		else if ((long int)(newcost * taux) > (long int)(elite[j].cost * taux))
 			return (0);
-		i++;
+		j--;
 	}
 	return (1);
 }
 
-t_pop		*get_elite(t_pop *pop, int under)
+t_pop		*get_elite(t_pop *pop, int comeback)
 {
 	int		i;
 	int		j;
+	int		pass;
 	t_pop	*elite;
 
 	i = 0;
@@ -138,8 +108,10 @@ t_pop		*get_elite(t_pop *pop, int under)
 		{
 			if (pop[i].cost < elite[j].cost)
 			{
-				if (videur(pop[i].cost, elite, under) == 1)
-					push_in(pop[i], elite, j, i);
+				if ((pass = videur(pop[i].cost, elite, j, comeback)) == 1)
+					push_in(pop[i], elite, j, i, 0);
+				else if (pass == 0)
+					push_in(pop[i], elite, j, i, 1);
 				j = 100;
 			}
 			j++;
@@ -147,6 +119,5 @@ t_pop		*get_elite(t_pop *pop, int under)
 		i++;
 	}
 	get_elite_config(elite, pop);
-	add_rand_to_pop(elite, under);
 	return (elite);
 }

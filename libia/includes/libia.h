@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 14:04:23 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/01 17:32:52 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/03 16:52:35 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,6 @@ typedef struct	s_pop
 	int			index;
 }				t_pop;
 
-//struct for multithread firing
-typedef struct		s_fire
-{
-	pthread_t		pth;
-	int				i;
-	int				j;
-	int				index;
-	int				acte;
-	t_pop			*pop;
-	t_pop			*elit;
-	int				under;
-}					t_fire;
-
 typedef struct		s_netw
 {
 	t_neurone		**netw;
@@ -68,9 +55,23 @@ typedef struct		s_netw
 	double			*bias;
 	//data output
 	double			*out;
-	t_fire			fire;
 	int				nbth;
 }					t_netw;
+
+//struct for multithread firing
+typedef struct		s_fire
+{
+	pthread_t		pth;
+	//for testing pop
+	int				i;
+	int				j;
+	int				comeback;
+	int				index;
+	t_pop			*pop;
+	int				under;
+	t_netw			n;
+	double			**data;
+}					t_fire;
 
 //init env neural network
 int					init_neurone(t_neurone *n, int nb_weight, double (*f)(double));

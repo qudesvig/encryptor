@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 12:46:30 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/01 17:32:50 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/03 23:20:25 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,30 @@
 
 double		*irc_test(t_netw *n)
 {
-	double 		**data;
 	int			i;
-	int			j;
 	long double cost;
-	long double tmpcost;
-	
+	char		*line;
 
-	data = creat_database(50, -50);
 	i = 0;
 	cost = 0;
-	while (i < DATASIZE)
+	ft_putendl("irc test");
+	while (i < 5)
 	{
-		j = 0;
-		tmpcost = 0;
-		fill_nw(data[i], n);
-		firing(n);
-		//printf("firing on data[%d]\n", i);
-		while (j < NB_OUTPUT)
-		{
-			tmpcost += n->netw[NB_LAYER - 1][j].out - data[i][j];
-			printf("\tout : %.50f - target %.50f\n", n->netw[NB_LAYER - 1][j].out, data[i][j]);
-			j++;
-		}
-		cost += tmpcost * tmpcost;
-		free(data[i]);
+		get_next_line(0, &line);
+		n->netw[0][i].out = atof(line);
+		n->netw[0][i].in = n->netw[0][i].out;
+		ft_strdel(&line);
 		i++;
 	}
-	free(data);
-//	cost /= DATASIZE;
-	printf("in real condition average of cost = %.25Lf\n", cost);
-	if (cost < 0.000001)
-		export_weight(n, "in_real_conditions");
+	firing(n);
+	i = 0;
+	while (i < NB_OUTPUT)
+	{
+		printf("input[%d] = %f && output[%d] = %f\n", i, n->netw[0][i].in, i, n->netw[NB_LAYER - 1][i].out);
+		cost += (n->netw[NB_LAYER - 1][i].out - n->netw[0][i].in) * (n->netw[NB_LAYER - 1][i].out - n->netw[0][i].in);
+		i++;
+	}
+	printf("in real condition cost = %Lf\n", cost);
 	return (0);
 }
 
@@ -63,26 +55,28 @@ t_netw		*prepare_init_netw(t_netw *n, double *data)
 	bias = init_bias(bias);
 	if (init_network(n, data, layer_size, bias))
 		return (NULL);
-	reset_nw(n);
 	return (n);
 }
 
-void		init_encr(void)
+void		init_encr(int mod)
 {
 	t_netw	n;
 	double	**data;
-//	double	*weights;
-//	double	*bias;
+	double	*weights;
+	double	*bias;
 
 	data = import_data("data/data_s5");
-//	weights = import_weight("config/weights");
-//	bias = import_bias("config/bias");
 	prepare_init_netw(&n, data[0]);
-//	apply_weight(&n, weights);
-//	apply_bias(&n, bias);
-//	display_weight(n);
-	genetic_training(&n, data);
-	irc_test(&n);
+	weights = import_weight("config/weightssave");
+	bias = import_bias("config/bias");
+	apply_weight(&n, weights);
+	apply_bias(&n, bias);
+	if (mod == 0)
+		genetic_training(&n, data);
+	else
+		irc_test(&n);
 	free_nw(&n);
-//	free(weights);
+	free(weights);
+	free(bias);
+	free_data(data);
 }

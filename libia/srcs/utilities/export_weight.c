@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/01 16:57:04 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/04/30 18:52:07 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/03 18:08:57 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,7 @@ int			export_bias(t_netw *n, char *name)
 	{
 		j = -1;
 		while (++j < n->layer_size[i])
-		{
 				dprintf(fd, "%.50f\t", n->netw[i][j].bias);
-		}
 		dprintf(fd, "\n");
 	}
 	close(fd);

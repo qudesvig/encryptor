@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:32:38 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/01 16:46:07 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/03 16:38:59 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,11 @@ double				rand_dbl(double min, double max)
 		index = 0;
 	if (index == 0)
 	{
-
 		if (read(fd, buff, BUFF_RAND) == -1)
 			return (0);
 		buff[BUFF_RAND] = '\0';
 	}
-	ret = (double)((double)buff[index] * (double)buff[index + 1]);
+	ret = (double)buff[index] * (double)buff[index + 1];
 	percent = ret / 16129;
 	ret = ((max - min) * percent);
 	index += 2;

@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/30 13:30:07 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/01 16:48:45 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/03 23:28:38 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,57 +31,108 @@ double		*evolve_bias(int n, double *base)
 	return (base);
 }*/
 
-void		*pth_gb(void *param)
+void		gangbang_rand(t_pop *elite, t_pop *pop, int i, int comeback)
 {
-	while (TH->i + TH->index < POPSIZE / NB_THREAD)
+	int				j;
+	int				cible;
+	
+	while (i < POPSIZE)
 	{
-		if (TH->i + TH->index % POPSIZE == 100)
-			TH->acte++;
-		TH->pop[TH->i + TH->index].cost = 0;
-		TH->pop[TH->i + TH->index].weights = tabdbl_cpy(TH->elit[TH->acte].weights, TH->pop[TH->i + TH->index].weights, NB_WEIGHT);
-		TH->pop[TH->i + TH->index].bias = tabdbl_cpy(TH->elit[TH->acte].bias, TH->pop[TH->i + TH->index].bias, NB_BIAS);
-		if (TH->i + TH->index < NB_NEURONE)
-			TH->pop[TH->i + TH->index].weights = evolve_weights(TH->i + TH->index, TH->pop[TH->i + TH->index].weights, TH->under);
-		else
-			TH->pop[TH->i + TH->index].bias = evolve_bias(TH->i + TH->index, TH->pop[TH->i + TH->index].bias, TH->under);
-		TH->i++;
+		pop[i].weights = tabdbl_cpy(pop[i].weights, elite[i % ELITESIZE].weights, NB_WEIGHT);
+		pop[i].bias = tabdbl_cpy(pop[i].bias, elite[i % ELITESIZE].bias, NB_BIAS);
+		j = (int)rand_dbl(0, NB_WEIGHT - (NB_WEIGHT / 5));
+		cible = j + NB_WEIGHT / 5;
+		while (j < cible)
+		{
+			evolve_weights(j, pop[i].weights, comeback, 1);
+			j++;
+		}
+		j = (int)rand_dbl(0, NB_BIAS - (NB_BIAS / 5));
+		cible = j + NB_BIAS / 5;
+		while (j < cible)
+		{
+			evolve_bias(j, pop[i].bias, comeback, 1);
+			j++;
+		}
+		i++;
 	}
-	pthread_exit(NULL);
 }
 
-void		init_pth(t_fire *pth, t_pop *elite, t_pop *pop, int under, int i)
-{
-	pth->i = 0;
-	pth->index = i * (POPSIZE / NB_THREAD);
-	pth->acte = pth->index / 100;
-	pth->under = under;
-	pth->elit = elite;
-	pth->pop = pop;
-}
 
-void		gang_bang(t_pop *elit, t_pop *pop, int under)
+void		gang_bang(t_pop *elite, t_pop *pop, int comeback)
 {
-	t_fire	f[NB_THREAD];
+	int		start;
 	int		i;
+	int		j;
+	int		nbch;
+	int		tx;
 
 	i = 0;
-	while (i < NB_THREAD)
+	start = 0;
+	tx = 10;
+	while (i < ELITESIZE)
 	{
-		init_pth(&f[i], elit, pop, under, i);
+		nbch = 1;
+		j = 1;
+		if (start < POPSIZE)
+		{
+			pop[start].weights = tabdbl_cpy(elite[i].weights, pop[start].weights, NB_WEIGHT);
+			pop[start].bias = tabdbl_cpy(elite[i].bias, pop[start].bias, NB_BIAS);
+		}
+		while (j < POPSIZE / 100 + tx && start + j < POPSIZE)
+		{
+			if (j % (POPSIZE / 200) == 0)
+				nbch++;
+			pop[start + j].weights = tabdbl_cpy(elite[i].weights, pop[start + j].weights, NB_WEIGHT);
+			pop[start + j].weights = evolve_weights(i + j, pop[start + j].weights, comeback, nbch);
+			pop[start + j].bias = tabdbl_cpy(elite[i].bias, pop[start + j].bias, NB_BIAS);
+			pop[start + j].bias = evolve_bias(i + j, pop[start + j].bias, comeback, nbch);
+			j++;
+		}
+		if (i % 5 == 0 && tx > 0)
+			tx -= 2;
+		start += j;
 		i++;
 	}
-	i = 0;
-	while (i < NB_THREAD)
-	{
-		ft_putendl("there2");
-		pthread_create(&(f[i].pth), NULL, pth_gb, (void*)&f[i]);
-		i++;
-	}
-	i = 0;
-	while (i < NB_THREAD)
-	{
-		ft_putendl("there3");
-		pthread_join(f[i].pth, NULL);
-		i++;
-	}
+	gangbang_rand(elite, pop, start, comeback);
+	free_elite(elite);
 }
+/*
+void		gang_bang(t_pop *elite, t_pop *pop, int comeback)
+{
+	int		start;
+	int		i;
+	int		j;
+	int		nbchw;
+	int		nbchb;
+
+	i = 0;
+	start = 0;
+	while (i < ELITESIZE)
+	{
+		nbchw = 1;
+		nbchb = 1;
+		j = 1;
+		if (start < POPSIZE)
+		{
+			pop[start].weights = tabdbl_cpy(elite[i].weights, pop[start].weights, NB_WEIGHT);
+			pop[start].bias = tabdbl_cpy(elite[i].bias, pop[start].bias, NB_BIAS);
+		}
+		while (j < POPSIZE / 100 && start + j < POPSIZE)
+		{
+			if (j == nbchw * NB_WEIGHT)
+				nbchw++;
+			if (j == nbchb * NB_BIAS)
+				nbchb++;
+			pop[start + j].weights = tabdbl_cpy(elite[i].weights, pop[start + j].weights, NB_WEIGHT);
+			pop[start + j].weights = evolve_weights(i + j, pop[start + j].weights, comeback, nbchw);
+			pop[start + j].bias = tabdbl_cpy(elite[i].bias, pop[start + j].bias, NB_BIAS);
+			pop[start + j].bias = evolve_bias(i + j, pop[start + j].bias, comeback, nbchb);
+			j++;
+		}
+		start += j;
+		i++;
+	}
+	gangbang_rand(elite, pop, start, comeback);
+	free_elite(elite);
+}*/
