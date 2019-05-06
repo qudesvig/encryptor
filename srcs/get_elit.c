@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/30 13:35:19 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/06 17:02:14 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/07 00:03:17 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,14 @@ void		display_elite(t_pop *elite)
 
 int			videur(double newcost, t_pop *elite, int j, int below)
 {
-	static double	taux = 1;
+	static double	taux = 10;
 
 	if (newcost > elite[0].cost * 2)
 		return (-1);
 	if (below > 10)
-		taux = 10;
+		taux = 50;
 	else
-		taux = 1;
+		taux = 10;
 	while (j > 0)
 	{
 		if ((long int)(newcost * taux) == (long int)(elite[j].cost * taux))

@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 00:20:21 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/04 07:39:47 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/07 00:35:49 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void		gang_bang_pth(t_pop *elite, t_pop *pop, int comeback)
 		pthread_join(pth[i].pth, NULL);
 		i++;
 	}
-	ft_putendl("gb random");
 	gangbang_rand(elite, pop, pth[3].start, comeback);
 	free_elite(elite);
 }

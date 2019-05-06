@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 12:46:30 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/06 18:44:48 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/07 00:40:26 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,27 @@ double		*irc_test(t_netw *n)
 	long double cost;
 	char		*line;
 
-	i = 0;
-	cost = 0;
-	ft_putendl("irc test");
-	while (i < 5)
+	while (1)
 	{
-		get_next_line(0, &line);
-		n->netw[0][i].out = atof(line);
-		n->netw[0][i].in = n->netw[0][i].out;
-		ft_strdel(&line);
-		i++;
-	}
-	firing(n);
-	i = 0;
-	while (i < NB_OUTPUT)
-	{
-		printf("input[%d] = %f && output[%d] = %f\n", i, n->netw[0][i].in, i, n->netw[NB_LAYER - 1][i].out);
-		cost += (n->netw[NB_LAYER - 1][i].out - n->netw[0][i].in) * (n->netw[NB_LAYER - 1][i].out - n->netw[0][i].in);
-		i++;
+		i = 0;
+		cost = 0;
+		ft_putendl("irc test");
+		while (i < 5)
+		{
+			get_next_line(0, &line);
+			n->netw[0][i].out = atof(line);
+			n->netw[0][i].in = n->netw[0][i].out;
+			ft_strdel(&line);
+			i++;
+		}
+		firing(n);
+		i = 0;
+		while (i < NB_OUTPUT)
+		{
+			printf("input[%d] = %f && output[%d] = %f\n", i, n->netw[0][i].in, i, n->netw[NB_LAYER - 1][i].out);
+			cost += (n->netw[NB_LAYER - 1][i].out - n->netw[0][i].in) * (n->netw[NB_LAYER - 1][i].out - n->netw[0][i].in);
+			i++;
+		}
 	}
 	printf("in real condition cost = %Lf\n", cost);
 	return (0);
@@ -45,10 +48,10 @@ t_netw		*prepare_init_netw(t_netw *n, double *data)
 {
 	double	*bias;
 	int		*layer_size;
-	
+
 	if ((!(data = (double*)malloc(sizeof(double) * NB_INPUT)))
-		|| (!(bias = (double*)malloc(sizeof(double) * NB_LAYER - 1)))
-		|| (!(layer_size = (int*)malloc(sizeof(int) * NB_LAYER))))
+			|| (!(bias = (double*)malloc(sizeof(double) * NB_LAYER - 1)))
+			|| (!(layer_size = (int*)malloc(sizeof(int) * NB_LAYER))))
 		return (NULL);
 	data = fill_data(data);
 	layer_size = init_layer_size(layer_size);
@@ -76,7 +79,7 @@ void		init_encr(int mod)
 	else
 		irc_test(&n);
 	free_nw(&n);
-//	free(weights);
-//	free(bias);
+	//	free(weights);
+	//	free(bias);
 	free_data(data);
 }
