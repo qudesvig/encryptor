@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:40:56 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/03 23:20:49 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/06 18:50:01 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ double		elitecost(t_pop *elite)
 
 	i = 0;
 	cost = 0;
-	while (i < 100 && elite[i].index != -1)
+	while (i < ELITESIZE && elite[i].index != -1)
 	{
-		if (i % 10 == 0)
+		if (i % (ELITESIZE / 10) == 0)
 			printf("cost %d : index %d = %f\n", i, elite[i].index, elite[i].cost);
 		cost += elite[i].cost;
 		i++;
@@ -82,18 +82,18 @@ int			genetic_training(t_netw *n, double **data)
 		if (elite[0].cost < best)
 		{
 			saving_for_cmb(&save, elite[0]);
-			saving_config(elite[0], n, 1);
+			saving_config(elite[0], n, 2);
 			comeback = 0;
 			best = elite[0].cost;
 		}
 		printf("best = %f\n", best);
-		if (comeback > 50)
+		if (comeback > 25)
 		{
-			reinit_pop(save, pop);
+			reinit_pop(elite[0], pop);
 			comeback = 0;
 		}
 		else
-			gang_bang(elite, pop, comeback);
+			gang_bang_pth(elite, pop, comeback);
 		ft_putendl("-----------end new gen-----------------");
 		comeback++;
 		epoch++;

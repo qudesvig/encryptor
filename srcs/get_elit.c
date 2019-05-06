@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/30 13:35:19 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/03 16:30:42 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/06 17:02:14 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void		get_elite_config(t_pop *elite, t_pop *pop)
 	int		i;
 
 	i = 0;
-	while (i < 100)
+	while (i < ELITESIZE)
 	{
 		if (elite[i].index != -1)
 		{
@@ -63,7 +63,7 @@ void		display_elite(t_pop *elite)
 	int 	i;
 
 	i = 0;
-	while (i < 100 && elite[i].index != -1)
+	while (i < ELITESIZE && elite[i].index != -1)
 	{
 		printf("elite[%d].cost at index %d = %.25f\n", i, elite[i].index, elite[i].cost);
 		i++;
@@ -74,11 +74,12 @@ int			videur(double newcost, t_pop *elite, int j, int below)
 {
 	static double	taux = 1;
 
-	if (newcost > elite[0].cost * 7)
+	if (newcost > elite[0].cost * 2)
 		return (-1);
-	//if (below == 1)
-	//	taux *= 10;
-	(void)below;
+	if (below > 10)
+		taux = 10;
+	else
+		taux = 1;
 	while (j > 0)
 	{
 		if ((long int)(newcost * taux) == (long int)(elite[j].cost * taux))
@@ -112,7 +113,7 @@ t_pop		*get_elite(t_pop *pop, int comeback)
 					push_in(pop[i], elite, j, i, 0);
 				else if (pass == 0)
 					push_in(pop[i], elite, j, i, 1);
-				j = 100;
+				j = ELITESIZE;
 			}
 			j++;
 		}

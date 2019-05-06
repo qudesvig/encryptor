@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 16:43:25 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/03 21:54:48 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/04 02:26:23 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ void		reinit_pop(t_pop base, t_pop *pop)
 		cible = j + NB_WEIGHT / 4;
 		while (j < cible)
 		{
-			evolve_weights(j, pop[i].weights, (i < POPSIZE / 2) ? 0 : 25, 1);
+			evolve_weights(j, pop[i].weights, (i < POPSIZE / 2) ? 0 : 10, 1);
 			j++;
 		}
 		j = (int)rand_dbl(0, NB_BIAS - (NB_BIAS / 4));
 		cible = j + NB_BIAS / 4;
 		while (j < cible)
 		{
-			evolve_bias(j, pop[i].bias, (i < POPSIZE / 2) ? 0 : 25, 1);
+			evolve_bias(j, pop[i].bias, (i < POPSIZE / 2) ? 0 : 10, 1);
 			j++;
 		}
 		pop[i].cost = -1;

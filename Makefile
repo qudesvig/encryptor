@@ -14,6 +14,7 @@ SRCS_NAME= main.c \
 		   testing_pop.c \
 		   saving.c \
 		   free_env.c \
+		   gang_bang_pth.c \
 		   fct.c
 
 SRCS= $(addprefix $(SRCS_PATH), $(SRCS_NAME))

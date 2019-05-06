@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/30 13:34:39 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/03 18:47:50 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/06 18:50:42 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,17 @@ double		*evolve_weights(int n, double *base, int comeback, int nb_change)
 {
 	int				i;
 	int				j;
-	static double	lr = 2;
+	double			lr;
 	double			ch;
 
-	if (comeback > 20)
-		lr = 4;
+	lr = 1;
+	if (comeback > 10)
+		lr = 0.1;
 	else
-		lr = 2;
+		lr = 0.5;
 	j = 0;
 	i = n % (NB_WEIGHT - nb_change);
-	while (j < nb_change)
+	while (j < nb_change && i + j < NB_WEIGHT && i + j > 0)
 	{
 		ch = rand_dbl((-1 * lr), (1 * lr));
 		base[i + j] += ch;
@@ -38,15 +39,16 @@ double		*evolve_bias(int n, double *base, int comeback, int nb_change)
 {
 	int				i;
 	int				j;
-	static double	lr = 1;
+	double			lr;
 
-	if (comeback > 20)
-		lr = 3;
+	lr = 2;
+	if (comeback > 10)
+		lr = 0.1;
 	else
-		lr = 1;
+		lr = 0.5;
 	j = 0;
 	i = n % (NB_BIAS - nb_change);
-	while (j < nb_change)
+	while (j < nb_change && i + j < NB_BIAS && i + j > 0)
 	{
 		base[i + j] += rand_dbl(-1 * lr, 1 * lr);
 		j++;

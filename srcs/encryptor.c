@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 12:46:30 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/03 23:20:25 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/06 18:44:48 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void		init_encr(int mod)
 
 	data = import_data("data/data_s5");
 	prepare_init_netw(&n, data[0]);
-	weights = import_weight("config/weightssave");
-	bias = import_bias("config/bias");
+	weights = import_weight("config/weightssaveth");
+	bias = import_bias("config/biassaveth");
 	apply_weight(&n, weights);
 	apply_bias(&n, bias);
 	if (mod == 0)
@@ -76,7 +76,7 @@ void		init_encr(int mod)
 	else
 		irc_test(&n);
 	free_nw(&n);
-	free(weights);
-	free(bias);
+//	free(weights);
+//	free(bias);
 	free_data(data);
 }

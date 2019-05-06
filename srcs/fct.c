@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/30 12:33:57 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/03 22:02:32 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:48:11 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ double		*add_dbltab_rand(double *dest, unsigned int size)
 	i = 0;
 	while (i < size)
 	{
-		dest[i] += rand_dbl(-2, 2);
+		dest[i] += rand_dbl(-0.5, 0.5);
 		i++;
 	}
 	return (dest);

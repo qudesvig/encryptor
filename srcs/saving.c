@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 22:00:59 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/03 22:01:21 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/06 14:19:42 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int			export_weight_tab(double *tab, char *name)
 	close(fd);
 	return (0);
 }
+
 void		saving_config(t_pop best, t_netw *n, int mod)
 {
 	apply_weight(n, best.weights);
@@ -34,10 +35,14 @@ void		saving_config(t_pop best, t_netw *n, int mod)
 		export_weight(n, "config/weights");
 		export_bias(n, "config/bias");
 	}
-	else
+	else if (mod == 1)
 	{
-		put_dbltab(best.weights, NB_WEIGHT);
 		export_weight_tab(best.weights, "config/weightssave");
 		export_bias(n, "config/biassave");
+	}
+	else
+	{
+		export_weight_tab(best.weights, "config/weightssaveth");
+		export_bias(n, "config/biassaveth");
 	}
 }
