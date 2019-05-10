@@ -6,7 +6,7 @@
 /*   By: qudesvig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/30 13:34:39 by qudesvig          #+#    #+#             */
-/*   Updated: 2019/05/09 04:49:53 by qudesvig         ###   ########.fr       */
+/*   Updated: 2019/05/09 19:26:35 by qudesvig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ double		*evolve_weights(int n, double *base, int comeback, int nb_change)
 
 	lr = 1;
 	if (comeback > 10)
-		lr = 0.05 / 16;
+		lr = 0.05 / 8;
 	else
-		lr = 0.1 / 16;
+		lr = 0.1 / 8;
 	j = 0;
 	i = n % (NB_WEIGHT - nb_change);
 	while (j < nb_change && i + j < NB_WEIGHT && i + j > 0)
